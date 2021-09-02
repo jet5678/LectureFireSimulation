@@ -10,7 +10,7 @@ You should have received an invitation email, which asks you to register in the 
 
 To reach the computercluster JURECA you need to log in via the [secure shell protocol (SSH)](https://en.wikipedia.org/wiki/Secure_Shell_Protocol). It is recommended to read the user documentation, which can be found here: [access JURECA using SSH](https://apps.fz-juelich.de/jsc/hps/jureca/access.html).
 
-Most Linux and MacOS systems have a SSH client installed. On Windows, you can use tools like [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html).
+Most Linux, MacOS and Windows systems have a SSH client installed. On Windows, you can also use tools like [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html).
 
 Depending on your SSH client, there are various ways to generate a SSH key pair (public and private). It should always be protected with a passphrase.
 
@@ -18,7 +18,7 @@ One of the safety measure on JURECA is, that you need to specify the IP range fr
 
 ### Login
 
-In order to login to JURECA on a Linux or MacOS you just need to execute
+In order to login to JURECA you just need to execute
 
 ```none
 > ssh username1@jureca.fz-juelich.de
@@ -79,7 +79,7 @@ Please contact Lukas for an account.
 
 ### Login
 
-Using the provided credentials, you can use SSH to login to the front-end `fugg1.pleiades.uni-wuppertal.de`.
+Using the provided credentials, you can use SSH to login to the front-end `fugg1.pleiades.uni-wuppertal.de`. Currently, access is only possible from the university network (VPN is required from home).
 
 
 ### FDS Modules on the CoBra Cluster
@@ -197,9 +197,13 @@ A simple script to execute FDS on a given input file is as follows:
 #SBATCH --partition=normal
 #SBATCH --time=0-01:00:00 # days-hours:minutes:seconds
 #SBATCH --ntasks=24
+#SBATCH --cpus-per-task=2
 #SBATCH --nodes=1
 #SBATCH --output=stdout.%j
 #SBATCH --error=stderr.%j
+
+# Set the number of OMP threads
+export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 
 module use -a /beegfs/larnold/modules/
 module load FDS
